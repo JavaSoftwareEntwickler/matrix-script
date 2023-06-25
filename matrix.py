@@ -22,15 +22,14 @@ class message(str):
 class display(list):
     def __init__(self):
         self.width, self.height = shutil.get_terminal_size()
-        self.fixed_width = self.width
-        self[:] = [[' ' for _ in range(self.fixed_width)] for _ in range(self.height)]
+        self[:] = [[' ' for _ in range(self.width)] for _ in range(self.height)]
 
     def set_vertical(self, x, y, string):
         string = string[::-1]
         if x < 0:
-            x = self.fixed_width + x
-        if x >= self.fixed_width:
-            x = self.fixed_width - 1
+            x = self.width + x
+        if x >= self.width:
+            x = self.width - 1
         if y < 0:
             string = string[abs(y):]
             y = 0
