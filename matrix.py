@@ -1,7 +1,7 @@
 import time
 import random
 import os
-import msvcrt
+import shutil
 
 class message(str):
     def __new__(cls, text, speed):
@@ -21,30 +21,31 @@ class message(str):
 
 class display(list):
     def __init__(self):
-        _, self.width = os.get_terminal_size()
-        self.height = os.get_terminal_size().lines
-        self[:] = [[' ' for _ in range(self.width)] for _ in range(self.height)]
+        self.width, self.height = shutil.get_terminal_size()
+        self.fixed_width = self.width
+        self[:] = [[' ' for _ in range(self.fixed_width)] for _ in range(self.height)]
 
     def set_vertical(self, x, y, string):
         string = string[::-1]
         if x < 0:
-            x = self.width + x
-        if x >= self.width:
-            x = self.width - 1
+            x = self.fixed_width + x
+        if x >= self.fixed_width:
+            x = self.fixed_width - 1
         if y < 0:
             string = string[abs(y):]
             y = 0
         if y + len(string) > self.height:
-            string = string[0:self.height - y]
+            string = string[:self.height - y]
         if y >= self.height:
             return
         for i, char in enumerate(string):
-            self[y + i][x] = char
+            if y + i < self.height:
+                self[y + i][x] = char
 
     def __str__(self):
         return '\n'.join(''.join(row) for row in self)
 
-def matrix(iterations, sleep_time=.08):
+def matrix(iterations, sleep_time=.12):
     messages = []
     d = display()
     for _ in range(iterations):
@@ -59,7 +60,7 @@ def matrix(iterations, sleep_time=.08):
 if __name__ == '__main__':
     while True:
         try:
-            matrix(150)
+            matrix(100)
         except KeyboardInterrupt:
             print('\n\033[1m\033[32m=== Matrix Stopped ====\033[0m\n')
             break
