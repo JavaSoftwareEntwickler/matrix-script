@@ -44,7 +44,7 @@ class display(list):
     def __str__(self):
         return '\n'.join(''.join(row) for row in self)
 
-def matrix(iterations, sleep_time=.12):
+def matrix(iterations, sleep_time=.08):
     messages = []
     d = display()
     for _ in range(iterations):
@@ -59,7 +59,7 @@ def matrix(iterations, sleep_time=.12):
 if __name__ == '__main__':
     while True:
         try:
-            matrix(100)
+            matrix(150)
         except KeyboardInterrupt:
             print('\n\033[1m\033[32m=== Matrix Stopped ====\033[0m\n')
             break
